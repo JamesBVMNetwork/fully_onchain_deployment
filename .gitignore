@@ -5,6 +5,8 @@ __pycache__/
 
 # C extensions
 *.so
+**/data
+**/outputs
 
 # Distribution / packaging
 .Python

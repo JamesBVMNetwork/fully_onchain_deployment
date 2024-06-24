@@ -1,6 +1,5 @@
 {
-    "PRIVATE_KEY": "",
-    "NODE_ENDPOINT": "http://127.0.0.1:8545/",
-    "MODEL_INFERENCE_COST": 0,
-    "CHUNK_LEN": 30000
+    "private_key": "0xac0974bec39a17e36ba4a6b4d238ff944bacb478cbed5efcae784d7bf4f2ff80",
+    "model_path": "model.h5",
+    "model_name": "dummyModel"
 }

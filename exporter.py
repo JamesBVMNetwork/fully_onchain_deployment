@@ -2,11 +2,9 @@ import os
 import json
 import struct
 import base64
-import argparse
 import tensorflow as tf
 from loguru import logger
 from utils import get_class
-from dummy_model import create_dummy_model
 
 BASE_DIR = "onchain-keras-2"
 assert os.path.exists(BASE_DIR), f"{BASE_DIR} is required"
@@ -14,13 +12,9 @@ assert os.path.exists("./config.json"), "config.json is required"
 with open("./config.json", "r") as f:
     CONFIG = json.load(f)
 
-
-def parse_args():
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--model-name", type=str, default=None, help="Name of the model")
-    parser.add_argument("--output-dir", type=str, default="outputs", help="Output directory")
-    args = parser.parse_args()
-    return args
+NODE_ENDPOINT = "http://127.0.0.1:8545/"
+MODEL_INFERENCE_COST = 0
+CHUNK_LEN = 30000
 
 class ModelExporter:
     def __init__(self):
@@ -136,15 +130,21 @@ class ModelExporter:
         return model_data
     
 if __name__=="__main__":
-    args = parse_args()
-    save_dir = os.path.join(BASE_DIR, args.output_dir)
-    model = create_dummy_model()
+    save_dir = os.path.join(BASE_DIR, "outputs")
+    # load tensorflow model from h5 format
+    model = tf.keras.models.load_model(CONFIG["model_path"])
     exporter = ModelExporter()
-    exporter.export_model(model, model_name = args.model_name, output_dir = save_dir)
+    exporter.export_model(model, model_name = CONFIG["model_name"], output_dir = save_dir)
     logger.info("Creating .env file")
-    CONFIG["MODEL_JSON"] = os.path.join(args.output_dir, "graph.json")
-    CONFIG["B64_WEIGHTS"] = os.path.join(args.output_dir, "weights.txt")
+    env_config = {
+        "PRIVATE_KEY": CONFIG["private_key"],
+        "NODE_ENDPOINT": NODE_ENDPOINT,
+        "MODEL_INFERENCE_COST": MODEL_INFERENCE_COST,
+        "CHUNK_LEN": CHUNK_LEN,
+        "MODEL_JSON": os.path.join("outputs", "graph.json"),
+        "B64_WEIGHTS": os.path.join("outputs", "weights.txt"),
+    }
     with open(os.path.join(BASE_DIR, ".env"), "w") as f:
-        for key, value in CONFIG.items():
+        for key, value in env_config.items():
             f.write(f"{key}={value}\n")
     logger.info(".env file created")
