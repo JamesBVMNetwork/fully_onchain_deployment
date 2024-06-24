@@ -1,0 +1,6 @@
+{
+    "PRIVATE_KEY": "",
+    "NODE_ENDPOINT": "http://127.0.0.1:8545/",
+    "MODEL_INFERENCE_COST": 0,
+    "CHUNK_LEN": 30000
+}
