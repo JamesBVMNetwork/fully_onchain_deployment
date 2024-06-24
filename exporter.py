@@ -72,7 +72,7 @@ class ModelExporter:
                 logger.info(f"Layer {class_name} exported")
             except:
                 logger.info(f"Layer {class_name} not supported")
-                # raise Exception(f"Layer {class_name} not supported")
+                raise Exception(f"Layer {class_name} not supported")
             data["layer_config"] = layer_config
             layer_indices.append(layer_name)
             if tf_version == "2.16.1":
