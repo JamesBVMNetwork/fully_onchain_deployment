@@ -142,7 +142,7 @@ if __name__=="__main__":
         "MODEL_INFERENCE_COST": MODEL_INFERENCE_COST,
         "CHUNK_LEN": CHUNK_LEN,
         "MODEL_JSON": os.path.join("outputs", "graph.json"),
-        "B64_WEIGHTS": os.path.join("outputs", "weights.txt"),
+        "WEIGHT_TXT": os.path.join("outputs", "weights.txt"),
     }
     with open(os.path.join(BASE_DIR, ".env"), "w") as f:
         for key, value in env_config.items():
