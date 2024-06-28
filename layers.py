@@ -48,10 +48,11 @@ class ReLU:
     
 class Softmax:
     def __init__(self, cfg):
-        pass
-
+        assert "axis" in cfg, "axis is required for Softmax"
+        self.axis = cfg["axis"]
+    
     def get_layer_config(self):
-        return {}
+        return {"axis": self.axis}
     
 class Linear:
     def __init__(self, cfg):
