@@ -4,17 +4,7 @@ import struct
 import base64
 import tensorflow as tf
 from loguru import logger
-from utils import get_class
-
-BASE_DIR = "onchain-keras-2"
-assert os.path.exists(BASE_DIR), f"{BASE_DIR} is required"
-assert os.path.exists("./config.json"), "config.json is required"
-with open("./config.json", "r") as f:
-    CONFIG = json.load(f)
-
-NODE_ENDPOINT = "http://127.0.0.1:8545/"
-MODEL_INFERENCE_COST = 0
-CHUNK_LEN = 30000
+from src.utils import get_class
 
 class ModelExporter:
     def __init__(self):
@@ -128,23 +118,3 @@ class ModelExporter:
     def export_model(self, model, model_name = None, output_dir = "outputs"):
         model_data = self._export_tf_model(model, model_name, output_dir, tf_version = tf.__version__)
         return model_data
-    
-if __name__=="__main__":
-    save_dir = os.path.join(BASE_DIR, "outputs")
-    # load tensorflow model from h5 format
-    model = tf.keras.models.load_model(CONFIG["model_path"])
-    exporter = ModelExporter()
-    exporter.export_model(model, model_name = CONFIG["model_name"], output_dir = save_dir)
-    logger.info("Creating .env file")
-    env_config = {
-        "PRIVATE_KEY": CONFIG["private_key"],
-        "NODE_ENDPOINT": NODE_ENDPOINT,
-        "MODEL_INFERENCE_COST": MODEL_INFERENCE_COST,
-        "CHUNK_LEN": CHUNK_LEN,
-        "MODEL_JSON": os.path.join("outputs", "graph.json"),
-        "WEIGHT_TXT": os.path.join("outputs", "weights.txt"),
-    }
-    with open(os.path.join(BASE_DIR, ".env"), "w") as f:
-        for key, value in env_config.items():
-            f.write(f"{key}={value}\n")
-    logger.info(".env file created")

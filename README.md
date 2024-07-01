@@ -1,29 +1,23 @@
-# fully_on_chain_template
-Template for fully on chain model deployment
-
+# This repository supports EAI's users to deploy their own AI models on-chain.
 ## Installation
-To install the necessary dependencies, follow these steps:
 
 ```bash
-# Create the conda environment from the environment.yml file
-conda env create -f environment.yml
-
-# Activate the conda environment named 'model_exporter'
-conda activate model_exporter
-
-# Clone the specified GitHub repository containing the onchain-keras-2 project
-git clone https://github.com/rein-nbc/onchain-keras-2.git
+git clone https://github.com/JamesXYZT/fully_onchain_deployment
+cd fully_onchain_deployment
+pip install -r requirements.txt
+pip install -e .
 ```
-or
+
+## Usage
+After successful installation, you should take the following steps to export your model to json format prepareing for deploying on-chain.
 ```bash
-bash set_up.sh
+git clone https://github.com/rein-nbc/onchain-keras-2
+cd onchain-keras-2
+eai init --private-key $PRIVATE_KEY
+eai export-model --model $MODEL_PATH --name $MODEL_NAME
 ```
-
-## Run
-To run the deployment, make sure to update the [config.json](./config.json) file with your private key, model h5 file, and model name. Then, execute the following command:
-
+Then you can deploy your model on-chain by following the instructions:
 ```bash
-bash run.sh
+npm install
+npm run deployFunctionalModelNew
 ```
-
-Note: The code is based on tensorflow 2.16.1. It is recommended that your model should be defined based on this version.
